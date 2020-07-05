@@ -1,4 +1,4 @@
-WSL Ubuntu 18.04/18.10适用 
+WSL Ubuntu 20.04适用 
 ## 自动安装软件列表
 
 * Git
@@ -7,7 +7,6 @@ WSL Ubuntu 18.04/18.10适用
 * MySQL
 * Composer
 * Nodejs （自动更新到稳定版）
-* Yarn
 * Redis
 * Beanstalkd
 * Memcached
@@ -70,5 +69,5 @@ fastcgi_buffering off;
 
 ```
 # C:\Windows\System32\drivers\etc\hosts
-127.0.0.1 larabbs.test
+127.0.0.1 google.com
 ```
