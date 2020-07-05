@@ -14,9 +14,6 @@ function init_system {
     locale-gen zh_CN.UTF-8
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
     init_alias
-}
-
-function init_repositories {
     echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse' > /etc/apt/sources.list
     echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse' >> /etc/apt/sources.list
     echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse' >> /etc/apt/sources.list
@@ -26,14 +23,12 @@ function init_repositories {
     echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse' >> /etc/apt/sources.list
     echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse' >> /etc/apt/sources.list
     echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list    
     apt-get update
 }
 
 function install_basic_softwares {
-    apt-get install -y curl git build-essential unzip supervisor software-properties-common
+    apt-get install -y unzip supervisor software-properties-common
 }
 
 function install_php {
@@ -99,23 +94,23 @@ function init_alias {
     }    
 }
 
-call_function init_system "正在初始化系统" ${LOG_PATH}
-call_function init_repositories "正在初始化软件源" ${LOG_PATH}
-call_function install_basic_softwares "正在安装基础软件" ${LOG_PATH}
-call_function install_php "正在安装PHP" ${LOG_PATH}
-call_function install_mysql "正在安装Mysql" ${LOG_PATH}
-call_function install_nginx "正在安装Nginx" ${LOG_PATH}
-call_function install_memcached "正在安装Memcached" ${LOG_PATH}
-call_function install_beanstalkd "正在安装Beanstalkd" ${LOG_PATH}
-call_function install_redis "正在安装Redis" ${LOG_PATH}
-call_function install_yarn "正在安装Yarn" ${LOG_PATH}
-call_function install_composer "正在安装Composer" ${LOG_PATH}
-call_function install_node_npm "正在安装/更新Node \ Npm" ${LOG_PATH}
-call_function init_ssh "正在配置SSH" ${LOG_PATH}
-call_function init_autoremove "正在执行自动清理" ${LOG_PATH}
+call_function init_system "1.配置设置" ${LOG_PATH}
+call_function install_basic_softwares "2.安装软件" ${LOG_PATH}
+call_function install_php "3.安装PHP" ${LOG_PATH}
+call_function install_mysql "4.安装Mysql" ${LOG_PATH}
+call_function install_nginx "5.安装Nginx" ${LOG_PATH}
+call_function install_memcached "6.安装Memcached" ${LOG_PATH}
+call_function install_beanstalkd "7.安装Beanstalkd" ${LOG_PATH}
+call_function install_redis "8.安装Redis" ${LOG_PATH}
+call_function install_yarn "9.安装Yarn" ${LOG_PATH}
+call_function install_composer "10.安装Composer" ${LOG_PATH}
+call_function install_node_npm "11.安装/更新Node \ Npm" ${LOG_PATH}
+call_function init_ssh "12.配置SSH" ${LOG_PATH}
+call_function init_autoremove "13.执行清理" ${LOG_PATH}
+
 
 ansi
-ansi --green --bold "操作完成"
+ansi --green --bold "--操作完成--"
 ansi
 ansi -n "Mysql root 密码："
 ansi --bold --bg-white --red ${MYSQL_ROOT_PASSWORD}
