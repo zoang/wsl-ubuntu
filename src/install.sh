@@ -13,6 +13,9 @@ function init_system {
     locale-gen en_US.UTF-8
     locale-gen zh_CN.UTF-8
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    mv /bin/sleep /bin/sleep~
+    touch /bin/sleep
+    chmod +x /bin/sleep
     init_alias
     echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse' > /etc/apt/sources.list
     echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse' >> /etc/apt/sources.list
@@ -28,7 +31,7 @@ function init_system {
 }
 
 function install_basic_softwares {
-    apt-get install -y unzip supervisor software-properties-common
+    apt-get install -y unzip supervisor software-properties-common libsensors4
 }
 
 function install_php {
@@ -38,7 +41,7 @@ function install_php {
 function install_mysql {
     debconf-set-selections <<< "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}"
     debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}"
-    apt-get install -y mysql-server
+    apt-get install -y mysql-server mysql-client
     usermod -d /var/lib/mysql/ mysql
 }
 
@@ -49,6 +52,7 @@ function install_nginx {
 }
 
 function install_memcached { 
+    apt-get install -y libevent ibevent-dev
     apt-get install -y memcached
 }
 
@@ -60,24 +64,22 @@ function install_redis {
     apt-get install -y redis-server
 }
 
-function install_yarn {
-    apt-get install -y yarn
-    yarn config set registry https://registry.npm.taobao.org
-}
-
 function install_composer {
     apt-get install -y composer
     composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 }
 
-function install_node_npm {
+function install_node_npm {  
+    apt-get install -y libuv1=1.18.0-3 --allow-downgrades
+    apt-get install -y nodejs && nodejs-dev
     apt-get install -y npm
+    npm config set registry https://registry.npm.taobao.org
     npm install -g n && n stable
     npm -g install npm@next
 }
 
-function init_ssh {
-    apt-get remove -y --purge openssh-server
+function init_ssh {    
+    apt-get install -y openssh-client=1:7.6p1-4ubuntu0.4 --allow-downgrades
     apt-get install openssh-server
     echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
     echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
@@ -94,7 +96,7 @@ function init_alias {
     }    
 }
 
-call_function init_system "1.配置设置" ${LOG_PATH}
+call_function init_system "1.配置系统" ${LOG_PATH}
 call_function install_basic_softwares "2.安装软件" ${LOG_PATH}
 call_function install_php "3.安装PHP" ${LOG_PATH}
 call_function install_mysql "4.安装Mysql" ${LOG_PATH}
@@ -102,11 +104,10 @@ call_function install_nginx "5.安装Nginx" ${LOG_PATH}
 call_function install_memcached "6.安装Memcached" ${LOG_PATH}
 call_function install_beanstalkd "7.安装Beanstalkd" ${LOG_PATH}
 call_function install_redis "8.安装Redis" ${LOG_PATH}
-call_function install_yarn "9.安装Yarn" ${LOG_PATH}
-call_function install_composer "10.安装Composer" ${LOG_PATH}
-call_function install_node_npm "11.安装/更新Node \ Npm" ${LOG_PATH}
-call_function init_ssh "12.配置SSH" ${LOG_PATH}
-call_function init_autoremove "13.执行清理" ${LOG_PATH}
+call_function install_composer "9.安装Composer" ${LOG_PATH}
+call_function install_node_npm "10.安装Npm" ${LOG_PATH}
+call_function init_ssh "11.配置SSH" ${LOG_PATH}
+call_function init_autoremove "12.执行清理" ${LOG_PATH}
 
 
 ansi
