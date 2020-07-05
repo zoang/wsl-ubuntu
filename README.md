@@ -18,13 +18,7 @@ WSL Ubuntu 18.04/18.10适用
 
 * Elasticsearch：`./install_elasticsearch.sh`
 
-## 重要说明（暂未修复）
 
-1. 全新Ubuntu环境，请先执行下面命令，否则执行到【安装软件】时报错 。
-
-```
-apt-get update && apt-get upgrade -y
-```
 
 ## 安装步骤
 
