@@ -21,13 +21,7 @@ WSL Ubuntu 18.04/18.10适用
 
 ## 重要说明
 
-近期由于RAW受DNS污染，无法访问RAW进行安装，暂时解决办法
-
-* 一、修改本机HOST
-
-199.232.4.133 raw.githubusercontent.com
-
-* 二、克隆项目，进入SRC目录执行  ./install.sh
+近期由于RAW受DNS污染，无法访问RAW进行安装，克隆文件后进SRC使用./install.sh安装
 
 
 ## 安装步骤
