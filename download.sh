@@ -3,10 +3,10 @@
 { # this ensures the entire script is downloaded #
 
 lsb_release -d | grep 'Ubuntu' >& /dev/null
-[[ $? -ne 0 ]] && { echo "仅支持 WSL Ubuntu 18.04/18.10 系统"; exit 1; }
+[[ $? -ne 0 ]] && { echo "仅支持 WSL Ubuntu 20.04 系统"; exit 1; }
 
 DISTRO=$(lsb_release -c -s)
-[[ ${DISTRO} -ne "xenial" ]] && { echo "仅支持 WSL Ubuntu 18.04/18.10 系统"; exit 1; }
+[[ ${DISTRO} -ne "xenial" ]] && { echo "仅支持 WSL Ubuntu 20.04 系统"; exit 1; }
 
 green="\e[1;32m"
 nc="\e[0m"
@@ -18,7 +18,7 @@ rm -rf wsl-ubuntu
 tar zxf wsl-ubuntu.tar.gz
 mv wsl-ubuntu-master wsl-ubuntu
 rm -f wsl-ubuntu.tar.gz
-echo -e "${green}下载完毕${nc}"
+echo -e "${green}--下载完毕--${nc}"
 echo ""
 
 [ $(id -u) != "0" ] && {
