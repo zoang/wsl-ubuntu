@@ -29,10 +29,12 @@ function init_system {
     echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list    
     apt update 
     apt install -y libsensors4=1:3.4.0-4 --allow-downgrades
-    apt upgrade -y && apt autoremove -y
+    apt install -y libuv1=1.18.0-3 --allow-downgrades
+    apt install -y libuv1-dev    
 }
 
 function install_basic_softwares {
+    apt upgrade -y && apt autoremove -y
     apt install -y unzip supervisor software-properties-common
 }
 
@@ -69,11 +71,11 @@ function install_composer {
     composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 }
 
-function install_node_npm {  
-    apt install -y libuv1=1.18.0-3 --allow-downgrades
-    apt install -y nodejs && nodejs-dev
+function install_node_npm {      
+    apt install -y nodejs    
+    apt install -y nodejs-dev
     apt install -y npm
-    npm config set registry https://registry.npm.taobao.org    
+    npm config set registry https://registry.npm.taobao.org
 }
 
 function update_npm {      
