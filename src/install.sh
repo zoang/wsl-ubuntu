@@ -27,67 +27,68 @@ function init_system {
     echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse' >> /etc/apt/sources.list
     echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list
     echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list    
-    apt-get update
+    apt update 
+    apt install -y libsensors4=1:3.4.0-4 --allow-downgrades
+    apt upgrade -y && apt autoremove -y
 }
 
 function install_basic_softwares {
-    apt-get install -y unzip supervisor software-properties-common libsensors4
+    apt install -y unzip supervisor software-properties-common
 }
 
 function install_php {
-    apt-get install -y php7.2-bcmath php7.2-cli php7.2-curl php7.2-fpm php7.2-gd php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pgsql php7.2-readline php7.2-xml php7.2-zip
+    apt install -y php7.2-bcmath php7.2-cli php7.2-curl php7.2-fpm php7.2-gd php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pgsql php7.2-readline php7.2-xml php7.2-zip
 }
 
 function install_mysql {
     debconf-set-selections <<< "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}"
     debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}"
-    apt-get install -y mysql-server mysql-client
+    apt install -y mysql-server mysql-client
     usermod -d /var/lib/mysql/ mysql
 }
 
-function install_nginx {
-    apt-get remove -y apache2    
-    apt-get install -y nginx    
+function install_nginx {   
+    apt install -y nginx    
     systemctl enable nginx.service
 }
 
-function install_memcached { 
-    apt-get install -y libevent ibevent-dev
-    apt-get install -y memcached
+function install_memcached {    
+    apt install -y memcached
 }
 
 function install_beanstalkd {
-    apt-get install -y beanstalkd
+    apt install -y beanstalkd
 }
 
 function install_redis {
-    apt-get install -y redis-server
+    apt install -y redis-server
 }
 
 function install_composer {
-    apt-get install -y composer
+    apt install -y composer
     composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 }
 
 function install_node_npm {  
-    apt-get install -y libuv1=1.18.0-3 --allow-downgrades
-    apt-get install -y nodejs && nodejs-dev
-    apt-get install -y npm
-    npm config set registry https://registry.npm.taobao.org
+    apt install -y libuv1=1.18.0-3 --allow-downgrades
+    apt install -y nodejs && nodejs-dev
+    apt install -y npm
+    npm config set registry https://registry.npm.taobao.org    
+}
+
+function update_npm {      
     npm install -g n && n stable
     npm -g install npm@next
 }
 
 function init_ssh {    
-    apt-get install -y openssh-client=1:7.6p1-4ubuntu0.4 --allow-downgrades
-    apt-get install openssh-server
+    apt remove -y openssh-server --purge
+    apt install -y openssh-client=1:7.6p1-4ubuntu0.4 --allow-downgrades
+    rm -fr /etc/ssh/sshd_config
+    apt install -y -q openssh-server
     echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
     echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
     service ssh --full-restart
-}
-
-function init_autoremove {    
-    apt-get autoremove -y
 }
 
 function init_alias {
@@ -106,8 +107,8 @@ call_function install_beanstalkd "7.安装Beanstalkd" ${LOG_PATH}
 call_function install_redis "8.安装Redis" ${LOG_PATH}
 call_function install_composer "9.安装Composer" ${LOG_PATH}
 call_function install_node_npm "10.安装Npm" ${LOG_PATH}
-call_function init_ssh "11.配置SSH" ${LOG_PATH}
-call_function init_autoremove "12.执行清理" ${LOG_PATH}
+call_function update_npm "11.更新Npm" ${LOG_PATH}
+call_function init_ssh "12.配置SSH" ${LOG_PATH}
 
 
 ansi
