@@ -48,7 +48,7 @@ wsl快捷启动PHP、MYSQL、SSH、REDIS等。
 #wsl
 ```
 
-##### ~~2. 在 /etc/nginx/nginx.conf http {} 内加入下面代码（已在安装SH中，自动加入）
+##### ~~2. 在 /etc/nginx/nginx.conf http {} 内加入下面代码（已在安装SH中，自动加入）~~
 
 ```
 http{
