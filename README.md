@@ -1,4 +1,5 @@
-WSL Ubuntu 20.04适用 
+# WSL Ubuntu 20.04快速搭建PHP环境
+
 ## 自动安装软件列表
 
 * Git
