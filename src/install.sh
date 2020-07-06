@@ -50,7 +50,8 @@ function install_mysql {
 }
 
 function install_nginx {   
-    apt install -y nginx    
+    apt install -y nginx
+    sed -i 's/http {/http {\n\n    #WSL Unix Socket BUG Repair \n    fastcgi_buffering off; /' /etc/nginx/nginx.conf
     systemctl enable nginx.service
 }
 
