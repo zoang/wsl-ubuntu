@@ -10,6 +10,8 @@ function install_java {
 }
 
 function install_es {
+    apt remove -y gpg
+    apt install -y gnupg1
     wget -qO  -  https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add  -
     echo "deb https://mirrors.tuna.tsinghua.edu.cn/elasticstack/6.x/apt stable main" > /etc/apt/sources.list.d/elastic-6.x.list
     apt-get update
