@@ -48,11 +48,11 @@ wsl快捷启动PHP、MYSQL、SSH、REDIS等。
 #wsl
 ```
 
-##### 2. 在 /etc/nginx/nginx.conf http {} 内加入下面代码（解决Unix Socket BUG）
+##### ~~2. 在 /etc/nginx/nginx.conf http {} 内加入下面代码（已在安装SH中，自动加入）
 
 ```
 http{
-#加入以下代码
+#加入以下代码修复WSL Unix Socket BUG
 fastcgi_buffering off; 
 
 }
