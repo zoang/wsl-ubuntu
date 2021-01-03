@@ -1,4 +1,4 @@
-# WSL Ubuntu 20.04快速搭建PHP环境
+# WSL Ubuntu 20.04快速搭建PHP非生产环境
 
 ## 自动安装软件列表
 
@@ -7,7 +7,7 @@
 * Nginx
 * MySQL
 * Composer
-* Nodejs （自动更新到稳定版）
+* Nodejs 
 * Redis
 * Beanstalkd
 * Memcached
