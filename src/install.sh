@@ -68,7 +68,10 @@ function install_redis {
 }
 
 function install_composer {
-    apt install -y composer
+    wget https://mirrors.aliyun.com/composer/composer.phar
+    mv composer.phar composer
+    chmod +x composer
+    sudo mv composer /usr/bin 
     composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 }
 
