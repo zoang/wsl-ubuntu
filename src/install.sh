@@ -72,7 +72,7 @@ function install_composer {
     mv composer.phar composer
     chmod +x composer
     sudo mv composer /usr/bin 
-    composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+    yes|composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 }
 
 function install_node_npm {      
