@@ -39,7 +39,7 @@ function install_basic_softwares {
 }
 
 function install_php {
-    apt install -y php7.2-bcmath php7.2-cli php7.2-curl php7.2-fpm php7.2-gd php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pgsql php7.2-readline php7.2-xml php7.2-zip
+    apt install -y php7.4-bcmath php7.4-cli php7.4-curl php7.4-fpm php7.4-gd php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-pgsql php7.4-readline php7.4-xml php7.4-zip
 }
 
 function install_mysql {
@@ -84,8 +84,7 @@ function install_node_npm {
 
 function update_npm {      
     npm install -g n && n stable
-    PATH="$PATH"
-    npm -g install npm@next
+    npm install npm@latest -g
 }
 
 function init_ssh {    
