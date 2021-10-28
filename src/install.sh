@@ -14,14 +14,13 @@ function init_system {
     echo 'root = /mnt/' >> /etc/wsl.conf
     echo 'options = "metadata,umask=22,fmask=11"' >> /etc/wsl.conf
     echo 'mountFsTab = false' >> /etc/wsl.conf   
-    echo ' ' >> ~/.bashrc
-    echo '#Fix mkdir command has wrong permissions' >> ~/.bashrc
-    echo 'if grep -q Microsoft /proc/version; then' >> ~/.bashrc
-    echo '    if [ "$(umask)" == '0000' ]; then' >> ~/.bashrc
-    echo '    if [ "$(umask)" == '0000' ]; then' >> ~/.bashrc
-    echo '        umask 0022' >> ~/.bashrc
-    echo '    fi' >> ~/.bashrc
-    echo 'fi' >> ~/.bashrc
+    echo ' ' >> /etc/profile
+    echo '#Fix mkdir command has wrong permissions' >> /etc/profile
+    echo 'if grep -q Microsoft /proc/version; then' >> /etc/profile
+    echo '    if [ "$(umask)" == '0000' ]; then' >> /etc/profile
+    echo '        umask 0022' >> /etc/profile
+    echo '    fi' >> /etc/profile
+    echo 'fi' >> /etc/profile
     init_alias
 }
 
