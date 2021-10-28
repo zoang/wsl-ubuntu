@@ -7,34 +7,25 @@ source ${CURRENT_DIR}/common.sh
 
 MYSQL_ROOT_PASSWORD=`random_string`
 
-function init_system {
-    export LC_ALL="en_US.UTF-8"
-    echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
-    locale-gen en_US.UTF-8
-    locale-gen zh_CN.UTF-8
-    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-    mv /bin/sleep /bin/sleep~
-    touch /bin/sleep
-    chmod +x /bin/sleep
+function init_system {    
+    apt update
+    echo '[automount]' > /etc/wsl.conf
+    echo 'enabled = true' >> /etc/wsl.conf
+    echo 'root = /mnt/' >> /etc/wsl.conf
+    echo 'options = "metadata,umask=22,fmask=11"' >> /etc/wsl.conf
+    echo 'mountFsTab = false' >> /etc/wsl.conf   
+    echo ' ' >> ~/.bashrc
+    echo '#Fix mkdir command has wrong permissions' >> ~/.bashrc
+    echo 'if grep -q Microsoft /proc/version; then' >> ~/.bashrc
+    echo '    if [ "$(umask)" == '0000' ]; then' >> ~/.bashrc
+    echo '    if [ "$(umask)" == '0000' ]; then' >> ~/.bashrc
+    echo '        umask 0022' >> ~/.bashrc
+    echo '    fi' >> ~/.bashrc
+    echo 'fi' >> ~/.bashrc
     init_alias
-    echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse' > /etc/apt/sources.list
-    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list
-    echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse' >> /etc/apt/sources.list    
-    apt update 
-    apt install -y libsensors4=1:3.4.0-4 --allow-downgrades
-    apt install -y libuv1=1.18.0-3 --allow-downgrades
-    apt install -y libuv1-dev    
 }
 
-function install_basic_softwares {
-    apt upgrade -y && apt autoremove -y
+function install_basic_softwares {    
     apt install -y unzip supervisor software-properties-common
 }
 
@@ -82,24 +73,9 @@ function install_node_npm {
     npm config set registry https://registry.npm.taobao.org
 }
 
-function update_npm {      
-    npm install -g n && n stable
-    npm install npm@latest -g
-}
-
-function init_ssh {    
-    apt remove -y openssh-server --purge
-    apt install -y openssh-client=1:7.6p1-4ubuntu0.4 --allow-downgrades
-    rm -fr /etc/ssh/sshd_config
-    apt install -y -q openssh-server
-    echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-    echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
-    service ssh --full-restart
-}
-
 function init_alias {
     alias wsl > /dev/null 2>&1 || {
-        echo "alias wsl='service nginx start & service ssh start & service mysql start & service redis-server start & service php7.2-fpm start'" >> ~/.bash_aliases
+        echo "alias wsl='service nginx start & service mysql start & service redis-server start & service php7.4-fpm start'" >> ~/.bash_aliases
     }    
 }
 
@@ -113,8 +89,6 @@ call_function install_beanstalkd "7.安装Beanstalkd" ${LOG_PATH}
 call_function install_redis "8.安装Redis" ${LOG_PATH}
 call_function install_composer "9.安装Composer" ${LOG_PATH}
 call_function install_node_npm "10.安装Npm" ${LOG_PATH}
-call_function update_npm "11.更新Npm" ${LOG_PATH}
-call_function init_ssh "12.配置SSH" ${LOG_PATH}
 
 
 ansi
@@ -123,6 +97,7 @@ ansi
 ansi -n "Mysql root 密码："
 ansi --bold --bg-white --red ${MYSQL_ROOT_PASSWORD}
 ansi
+ansi
 ansi --green --bold "1.请手动执行 $(ansi::yellow)source ~/.bash_aliases$(ansi::green) 使 alias 指令生效。"
-ansi --green --bold "2.快捷启动PHP MYSQL SSH服务，只需 root用户下 运行 $(ansi::yellow)wsl$(ansi::green) "
+ansi --green --bold "2.启动PHP MYSQL服务，只需 root用户下 运行 $(ansi::yellow)wsl$(ansi::green) "
 ansi
