@@ -2,8 +2,7 @@
 
 ## 自动安装软件列表
 
-* Git
-* PHP 7.2
+* PHP 7.4
 * Nginx
 * MySQL
 * Composer
@@ -66,9 +65,11 @@ fastcgi_buffering off;
 ```
 
 ##### 3. HOST 说明
-直接修改 Windows host 即可
+直接修改 Windows host 
 
 ```
 # C:\Windows\System32\drivers\etc\hosts
 127.0.0.1 google.com
 ```
+
+ubuntu下 /etc/nginx/sites-enabled下添加站点配置
