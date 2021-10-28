@@ -73,6 +73,12 @@ function install_node_npm {
     npm config set registry https://registry.npm.taobao.org
 }
 
+function update_npm {      
+    npm install -g n && n stable
+    PATH="$PATH"
+    npm install npm@latest -g
+}
+
 function init_alias {
     alias wsl > /dev/null 2>&1 || {
         echo "alias wsl='service nginx start & service mysql start & service redis-server start & service php7.4-fpm start'" >> ~/.bash_aliases
@@ -89,6 +95,7 @@ call_function install_beanstalkd "7.安装Beanstalkd" ${LOG_PATH}
 call_function install_redis "8.安装Redis" ${LOG_PATH}
 call_function install_composer "9.安装Composer" ${LOG_PATH}
 call_function install_node_npm "10.安装Npm" ${LOG_PATH}
+call_function update_npm "11.更新Npm" ${LOG_PATH}
 
 
 ansi
